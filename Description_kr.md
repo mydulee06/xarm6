@@ -4,9 +4,9 @@
 
 도커 허브 이미지에 이미 다 깔려있긴 한대 혹시 몰라 언급합니다.
 
-[RapidJson](https://github.com/Tencent/rapidjson): C++ Json 라이브러리
-[cpp-httplib](https://github.com/yhirose/cpp-httplib): C++ http 라이브러리
-[Paho_mqtt_cpp](https://github.com/eclipse/paho.mqtt.cpp): C++ mqtt 라이브러리
+* [RapidJson](https://github.com/Tencent/rapidjson): C++ Json 라이브러리
+* [cpp-httplib](https://github.com/yhirose/cpp-httplib): C++ http 라이브러리
+* [Paho_mqtt_cpp](https://github.com/eclipse/paho.mqtt.cpp): C++ mqtt 라이브러리
 
 ## Introduction
 
