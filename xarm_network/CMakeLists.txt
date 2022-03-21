@@ -124,12 +124,6 @@ target_link_libraries(xarm_register
   ${ament_LIBRARIES}
 )
 
-
-install(
-  DIRECTORY include/
-  DESTINATION include
-)
-
 install(
   TARGETS 
   xarm_mqtt_pub
