@@ -149,6 +149,10 @@ void XArmPlanner::go_home()
     planPoseTarget(home_);
     executePath();
 }
+
+/**
+ * 로봇에 시리얼 데이터를 보내 매뉴얼 모드 시작
+ */
 void XArmPlanner::start_manual_mode()
 {
     req_set_int16_ = std::make_shared<xarm_msgs::srv::SetInt16::Request>();
@@ -157,6 +161,10 @@ void XArmPlanner::start_manual_mode()
     req_set_int16_->data = 0;
     _call_request(client_set_state_,req_set_int16_);
 }
+
+/**
+ * 로봇의 End-effector의 위치를 method_arr_ 객체에 저장
+ */
 void XArmPlanner::get_eef_pose(const int delay) // 단위 : millisec
 {
     xarm_msgs::msg::RobotMsg xarm_state;
@@ -174,11 +182,17 @@ void XArmPlanner::get_eef_pose(const int delay) // 단위 : millisec
     method_arr_.PushBack(key, d.GetAllocator());
 }
 
+/**
+ * method_arr_ 객체에 저장되어 있는 마지막 위치 제거
+ */
 void XArmPlanner::rm_last_states()
 {
     method_arr_.PopBack();
 }
 
+/**
+ * 로봇에 시리얼 데이터를 보내 매뉴얼 모드 중지
+ */
 void XArmPlanner::stop_manual_mode()
 {
     req_set_int16_ = std::make_shared<xarm_msgs::srv::SetInt16::Request>();
@@ -188,6 +202,9 @@ void XArmPlanner::stop_manual_mode()
     _call_request(client_set_state_,req_set_int16_);
 }
 
+/**
+ * method_arr_ 객체에 저장되어 있는 정보를 기반으로 실제 로봇의 planning을 한 후에 method이름의 Json 파일로 저장
+ */
 void XArmPlanner::plan_and_write(std::string &method)
 {
     go_home();
@@ -223,6 +240,9 @@ void XArmPlanner::plan_and_write(std::string &method)
     fclose(fp);
 }
 
+/**
+ * 저장되어 있는 메소드를 카메라와 소켓 통신 없이 실행
+ */
 bool XArmPlanner::replay_recorded_path(std::string &method)
 {
     std::string path = method + ".json";
@@ -255,6 +275,9 @@ bool XArmPlanner::replay_recorded_path(std::string &method)
     return true;
 }
 
+/**
+ * 저장되어 있는 메소드를 카메라와 소켓 통신하여 실행
+ */
 bool XArmPlanner::replay_recorded_path_camera(std::string &method)
 {
     /*

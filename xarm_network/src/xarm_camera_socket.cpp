@@ -46,8 +46,14 @@ class Camera_Socket{
         return 1;
     }
 
-    // request : data : 0 -> 동작 실패, data : 1 -> 동작 완료, response : ret : 0 -> read 실패, ret : 1 -> read 성공
-    // 0 : 검사 취소, 1 : 검사 시작, 2 : 얼라인 요청, 3 : 타겟 포인트 비전 검사, 4 : 비전 검사 완료
+    /**
+     * Service, "/send_msg_to_camera"의 콜백함수
+     * 카메라와 소켓 통신하는 함수
+     * req->data에 따라 카메라에 보내는 데이터가 달라짐
+     * 0: 검사 취소, 1: 검사 시작, 2: 얼라인 요청, 3: 타겟 포인트 비전 검사, 4: 비전 검사 완료
+     * - Return
+     * 0: 카메라로 부터 데이터 read 실패, 1: 성공
+     */
     bool camera_socket(const std::shared_ptr<xarm_msgs::srv::SetInt16::Request> req, std::shared_ptr<xarm_msgs::srv::SetInt16::Response> res)
     {
         int str_len;

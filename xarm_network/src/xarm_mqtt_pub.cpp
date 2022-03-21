@@ -85,6 +85,10 @@ public:
 	bool is_done() const { return done_; }
 };
 
+/**
+ * "/xarm/xarm_states" subscription의 콜백함수
+ * 로봇의 전류와 전압을 실시간으로 읽어서 mqtt로 서버에 쏴줌.
+ */
 bool mqtt_pub_robot_data(const xarm_msgs::msg::RobotMsg::SharedPtr states){
 	rapidjson::Document d;
 	rapidjson::Value sn;
