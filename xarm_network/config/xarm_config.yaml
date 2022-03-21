@@ -1,0 +1,10 @@
+xarm_register:
+  ros__parameters:
+    is_new_company: True
+    is_new_factory: True
+    company_name: "cybertech"
+    factory_name: "factory1"
+    FactoryLoc: "Suwon"
+    robot_type: "xarm6"
+    loc_x: 0.0
+    loc_y: 0.0

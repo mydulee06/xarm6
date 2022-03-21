@@ -1,0 +1,10 @@
+# This format is suitable for the following services
+#   - xarm_record
+
+int16 data
+string parameter
+
+---
+
+int16 ret
+string message

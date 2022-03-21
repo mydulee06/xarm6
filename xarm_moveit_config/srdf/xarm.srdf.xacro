@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="xarm$(arg dof)">
+  <!-- parameters -->
+  <xacro:arg name="add_gripper" default="false"/>
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="dof" default="7" />
+
+  <xacro:include filename="$(find xarm_moveit_config)/srdf/xarm_macro.srdf.xacro" />
+  <xacro:xarm_macro_srdf prefix="$(arg prefix)" dof="$(arg dof)" add_gripper="$(arg add_gripper)" />
+
+</robot>
