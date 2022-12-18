@@ -86,7 +86,8 @@ public:
 };
 
 /**
- * 로봇의 전압과 전류를 subscribe 한 후 mqtt로 서버에 json 형태로 쏴줌.
+ * "/xarm/xarm_states" subscription의 콜백함수
+ * 로봇의 전류와 전압을 실시간으로 읽어서 mqtt로 서버에 쏴줌.
  */
 bool mqtt_pub_robot_data(const xarm_msgs::msg::RobotMsg::SharedPtr states){
 	rapidjson::Document d;

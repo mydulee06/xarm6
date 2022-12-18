@@ -130,10 +130,17 @@ int main(int argc, char **argv)
         res.set_content("Hello World!\n", "text/plain");
     });
 
+    /**
+     * 로봇 시리얼 얻는 http api 구현 함수
+     */
     svr.Get("/get_serial", [&](const httplib::Request &req, httplib::Response &res){
         res.set_content(robot_serial, "text/plain");
     });
 
+    /**
+     * 로봇에 명령어 보내는 api 구현 함수
+     * 로봇 serial, command, param이 있는지 확인하고 있으면 시리얼이 이 로봇과 맞는지 확인 후에 명령 실행
+     */
     svr.Post("/", [&](const httplib::Request &req, httplib::Response &res){
         //ros_cli.callRecSrv(1, std::string("sequence1"));
         rapidjson::ParseResult Pres = doc.Parse(req.body.c_str());

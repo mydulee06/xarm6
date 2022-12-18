@@ -161,8 +161,9 @@ void XArmPlanner::start_manual_mode()
     req_set_int16_->data = 0;
     _call_request(client_set_state_,req_set_int16_);
 }
+
 /**
- * 엔드이펙터의 위치를 method_arr_ 객체의 저장
+ * 로봇의 End-effector의 위치를 method_arr_ 객체에 저장
  */
 void XArmPlanner::get_eef_pose(const int delay) // 단위 : millisec
 {
@@ -187,8 +188,9 @@ void XArmPlanner::rm_last_states()
 {
     method_arr_.PopBack();
 }
+
 /**
- * 핸드 티칭 모드 해제 후 정상 모드로 전환
+ * 로봇에 시리얼 데이터를 보내 매뉴얼 모드 중지
  */
 void XArmPlanner::stop_manual_mode()
 {

@@ -115,17 +115,21 @@ bool XArmPlannerRunner::exec_plan_cb(const std::shared_ptr<xarm_msgs::srv::PlanE
 }
 
 /**
- * 서버(클라우드)에서 들어오는 http요청을 xarm_http_server에서 받고 이를 service 형태로 이 노드에 request함.
- * request를 받은 후에 처리하고 이를 다시 xarm_http_server에 respond 함.
- * 1 : Teaching Mode(매뉴얼 모드) 시작, 2 : 현재 상태 저장, 3 : 마지막으로 저장된 상태 삭제, 4 : 매뉴얼 모드 종료, 
- * 5 : 경로계획, 6 : Teaching Mode(매뉴얼 모드) 리셋, 7 : 시퀀스 변경, 8 : 카메라와 동작, 9 : 카메라 없이 동작
+ * Service "/xarm/xarm_record"의 콜백함수.
+ * 매뉴얼 모드로 로봇 메소드 생성, 변경 또는 동작하게 해줌. 
+ * 보통 http_server랑 같이 쓰여서 서버에서 들어오는 요청 수행함.
+ * req->data의 값에 따라 xarm_planner::XArmPlanner 객체의 함수들 불러옴. xarm_palnner.cpp이랑 같이 보면 이해하기 쉬움.
+ * req->data =
+ * 1 : Teaching Mode(매뉴얼 모드) 시작, 2 : 현재 상태 저장, 3 : 마지막으로 저장된 상태 삭제, 4 : 매뉴얼 모드 종료
+ * 5 : 경로계획, 6 : Teaching Mode(매뉴얼 모드) 리셋, 7 : 메소드 변경, 8 : 카메라와 동작, 9 : 카메라 없이 동작
+ * 성공하면 1, 실패하면 0 return.
  */
 bool XArmPlannerRunner::record_callback(const std::shared_ptr<xarm_msgs::srv::SetInt16Str::Request> req, std::shared_ptr<xarm_msgs::srv::SetInt16Str::Response> res)
 {
     res->ret = 0;
     if(req->data == 1){
         xarm_client_planner_ = std::make_shared<xarm_planner::XArmPlanner>(client_node_, group_name_);
-        method_ = req->parameter;
+        method_ = req->parameter; // method: 메소드 이름. ".json" 붙여서 파일 불러옴
         RCLCPP_INFO(node_->get_logger(), "Manual_mode start");
         xarm_client_planner_->start_manual_mode();
         res->ret = 1;

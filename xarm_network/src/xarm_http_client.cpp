@@ -31,6 +31,11 @@ public:
     }
 
 private:
+    /**
+     * "/xarm/xarm_states" subscription의 콜백함수
+     * 로봇의 상태코드와 에러코드를 초기에 한번 읽어서 서버에 http로 쏴준 후에
+     * 바뀔 때마다 다시 쏴줌.
+     */
     void xarm_states_callback(const xarm_msgs::msg::RobotMsg::SharedPtr states)
     {
         char serial[states->serial_number.size()];
