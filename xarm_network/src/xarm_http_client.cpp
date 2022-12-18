@@ -10,6 +10,10 @@
 #define SERVER_IP "101.101.218.67"
 #define SERVER_PORT 8000
 
+/**
+ * ROS 내에서 publish 되는 로봇의 State와 err 코드(0이면 정상)를 subscribe 한 후 클라우드 쪽으로 쏴줌.
+ * 최초 로봇이 켜질 때 한 번 쏘고 상태가 바뀔 때마다 다시 쏴줌.
+ */
 class Http_Cli
 {
 public:

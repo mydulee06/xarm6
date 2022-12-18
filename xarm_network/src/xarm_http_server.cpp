@@ -81,6 +81,10 @@ std::string log(const httplib::Request &req, const httplib::Response &res) {
 
 void empty_cb(const xarm_msgs::msg::RobotMsg::SharedPtr states){}
 
+/**
+ * 서버에서 들어오는 http 요청에 따라 처리
+ * 자세한 내용은 api 참조
+ */
 int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);

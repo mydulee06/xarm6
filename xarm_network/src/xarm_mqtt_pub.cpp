@@ -85,6 +85,9 @@ public:
 	bool is_done() const { return done_; }
 };
 
+/**
+ * 로봇의 전압과 전류를 subscribe 한 후 mqtt로 서버에 json 형태로 쏴줌.
+ */
 bool mqtt_pub_robot_data(const xarm_msgs::msg::RobotMsg::SharedPtr states){
 	rapidjson::Document d;
 	rapidjson::Value sn;

@@ -149,6 +149,10 @@ void XArmPlanner::go_home()
     planPoseTarget(home_);
     executePath();
 }
+/**
+ * 핸드 티칭 모드 시작.
+ * mode와 state를 service로 지정.
+ */
 void XArmPlanner::start_manual_mode()
 {
     req_set_int16_ = std::make_shared<xarm_msgs::srv::SetInt16::Request>();
@@ -157,6 +161,9 @@ void XArmPlanner::start_manual_mode()
     req_set_int16_->data = 0;
     _call_request(client_set_state_,req_set_int16_);
 }
+/**
+ * 엔드이펙터의 위치를 method_arr_ 객체의 저장
+ */
 void XArmPlanner::get_eef_pose(const int delay) // 단위 : millisec
 {
     xarm_msgs::msg::RobotMsg xarm_state;
@@ -173,12 +180,16 @@ void XArmPlanner::get_eef_pose(const int delay) // 단위 : millisec
 
     method_arr_.PushBack(key, d.GetAllocator());
 }
-
+/**
+ * 마지막으로 저장한 엔드이펙터의 위치 삭제
+ */
 void XArmPlanner::rm_last_states()
 {
     method_arr_.PopBack();
 }
-
+/**
+ * 핸드 티칭 모드 해제 후 정상 모드로 전환
+ */
 void XArmPlanner::stop_manual_mode()
 {
     req_set_int16_ = std::make_shared<xarm_msgs::srv::SetInt16::Request>();
@@ -187,7 +198,11 @@ void XArmPlanner::stop_manual_mode()
     req_set_int16_->data = 0;
     _call_request(client_set_state_,req_set_int16_);
 }
-
+/**
+ * method_arr_에 저장된 위치를 planning한 후에 method 이름으로 json 파일 저장
+ * method 이름 지정해주어야 하고 method_arr_ 객체는 계속 살아있으므로 언제든지 다시 planning 후 저장 가능.
+ * 기존에 똑같은 이름의 json 파일이 있으면 삭제 후 저장
+ */
 void XArmPlanner::plan_and_write(std::string &method)
 {
     go_home();
@@ -222,7 +237,10 @@ void XArmPlanner::plan_and_write(std::string &method)
 
     fclose(fp);
 }
-
+/**
+ * 저장된 method 파일을 불러와서 replay함.
+ * 비전 카메라와 연동 X
+ */
 bool XArmPlanner::replay_recorded_path(std::string &method)
 {
     std::string path = method + ".json";
@@ -255,16 +273,20 @@ bool XArmPlanner::replay_recorded_path(std::string &method)
     return true;
 }
 
+/**
+ * 저장된 메소드 파일을 불러와서 카메라와 연동하여 작동.
+ * 카메라에서 소켓 통신으로 "x,y,theta" 조정값을 읽어온후 그에 맞춰 planning을 함.
+ */
 bool XArmPlanner::replay_recorded_path_camera(std::string &method)
 {
     /*
-    if(callService(1) != 1) return false;
+    if(callService(1) != 1) return false; // 비전 검사 실시를 카메라에 알림.
     go_home();
     //req_set_int16_ = std::make_shared<xarm_msgs::srv::SetInt16::Request>();
     //req_set_int16_->data = 2;
     //_call_request(client_send_msg_to_camera_,req_set_int16_, req_set_int16_);
     //RCLCPP_INFO(node_->get_logger(), "Message from camera : %s", req_set_int16_->message.c_str());
-    if(callService(2) != 1) return false;
+    if(callService(2) != 1) return false; // 조정값(allign)을 카메라에 요청.
     float tf[3];
     boost::char_separator<char> sep(",");
     boost::tokenizer<boost::char_separator<char>> tokens(srv_msg_, sep);
@@ -289,18 +311,18 @@ bool XArmPlanner::replay_recorded_path_camera(std::string &method)
         tf_pose.orientation.y = pose_q[1];
         tf_pose.orientation.z = pose_q[2];
         tf_pose.orientation.w = pose_q[3];
-        std::vector<geometry_msgs::msg::Pose> temp_poses = {tf_pose};
+        std::vector<geometry_msgs::msg::Pose> temp_poses = {tf_pose}; // 조정된 위치 값.
         if(!planCartesianPath(temp_poses)) {
-            callService(0);
+            callService(0); // planning 실패 시 에러 값 보냄. (물론 거의 안 일어납니다.)
             return false;
         }
         if(!executePath()){
             callService(0);
             return false;
         }
-        if(callService(3) != 1) return false;
+        if(callService(3) != 1) return false; // 한번의 움직임이 끝나 카메라에 촬영 요청.
     }
-    if(callService(4) != 1) return false;
+    if(callService(4) != 1) return false; // 메소드 끝났음을 카메라에 알림.
     return true;
     */
 }

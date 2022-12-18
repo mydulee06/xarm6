@@ -114,7 +114,12 @@ bool XArmPlannerRunner::exec_plan_cb(const std::shared_ptr<xarm_msgs::srv::PlanE
     return success;
 }
 
-// 1 : Teaching Mode(매뉴얼 모드) 시작, 2 : 현재 상태 저장, 3 : 마지막으로 저장된 상태 삭제, 4 : 매뉴얼 모드 종료, 5 : 경로계획, 6 : Teaching Mode(매뉴얼 모드) 리셋, 7 : 시퀀스 변경, 8 : 카메라와 동작, 9 : 카메라 없이 동작
+/**
+ * 서버(클라우드)에서 들어오는 http요청을 xarm_http_server에서 받고 이를 service 형태로 이 노드에 request함.
+ * request를 받은 후에 처리하고 이를 다시 xarm_http_server에 respond 함.
+ * 1 : Teaching Mode(매뉴얼 모드) 시작, 2 : 현재 상태 저장, 3 : 마지막으로 저장된 상태 삭제, 4 : 매뉴얼 모드 종료, 
+ * 5 : 경로계획, 6 : Teaching Mode(매뉴얼 모드) 리셋, 7 : 시퀀스 변경, 8 : 카메라와 동작, 9 : 카메라 없이 동작
+ */
 bool XArmPlannerRunner::record_callback(const std::shared_ptr<xarm_msgs::srv::SetInt16Str::Request> req, std::shared_ptr<xarm_msgs::srv::SetInt16Str::Response> res)
 {
     res->ret = 0;
