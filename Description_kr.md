@@ -17,10 +17,24 @@
 
 입니다. 일단은 제가 한 작업들 한게 중요하니깐 그거 위주로 설명하고 필요하면 전반적인 설명 덧붙이겠습니다.
 
+## Docker with GUI
+
+도커에서 GUI와 그래픽카드를 쓰려면 아래 명령어로 스크립트를 다운 받고 실행하면 xarm6라는 이름의 도커 컨테이너가 실행됩니다.
+
+    curl -o gui-docker \
+    https://raw.githubusercontent.com/mydulee06/xarm6/main/.docker/gui-docker && \
+    chmod +x gui-docker
+    
+    sudo ./gui-docker
+
 ## Node Description
 
 아래 명령어를 실행하면
 
+    # rviz 상으로 로봇 보임
+    ros2 launch xarm_planner xarm6_planner_realmove.launch.py robot_ip:=192.168.1.222 report_type:='rich' server_ip:='192.168.0.77' port:=5000 object_name:="desk" mesh_file:="package://xarm_object/meshes/desk.stl"
+    
+    # rviz 없음
     ros2 launch xarm_planner xarm6_planner_realmove_wo_rviz.launch.py robot_ip:=192.168.1.222 report_type:='rich' server_ip:='192.168.0.77' port:=5000 object_name:="desk" mesh_file:="package://xarm_object/meshes/desk.stl"
 
 node가 동시에 실행되는데, 중요한 node들 몇가지만 뽑아 설명하자면 다음과 같습니다.
